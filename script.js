@@ -1,3 +1,14 @@
+const scores = document.querySelector("#scores");
+
+const header = document.querySelector(".header");
+const footer = document.querySelector(".footer");
+const flavour = document.querySelector(".flavour");
+
+const container = document.querySelector(".container");
+
+const choice = document.querySelectorAll("button");
+
+
 const getComputerChoice = () => {
     let num = Math.floor(Math.random() * 3);
     
@@ -10,64 +21,67 @@ const getComputerChoice = () => {
     };
 };
 
+
 let playerWins = 0;
 let computerWins = 0;
 
 
 const playRound = (playerSelection, computerSelection) => {
-    const getPlayerChoice = window.prompt("Choose your move: ", "Rock, Paper, or Scissors?").toLowerCase()
-
-    computerSelection = getComputerChoice();
-    playerSelection = getPlayerChoice;
-
+    
     if (playerSelection === computerSelection) {
-        return "It's a tie!";
+        flavour.textContent = `You both chose the same player.`;
     } else if (playerSelection === "rock") {
         if (computerSelection === "scissors") {
             playerWins++;
-            return `You win - ${playerSelection} beats ${computerSelection}!`
+            flavour.textContent = `You win - the stone injures the bird.`
         } else {
             computerWins++;
-            return `You lose - ${computerSelection} beats ${playerSelection}!`
+            flavour.textContent =  `You lose - the stone sinks in the water.`
         };
     } else if (playerSelection === "paper") {
         if (computerSelection === "rock") {
             playerWins++;
-            return `You win - ${playerSelection} beats ${computerSelection}!`
+            flavour.textContent =  `You win - the stone sinks in the water.`
         } else {
             computerWins++;
-            return `You lose - ${computerSelection} beats ${playerSelection}!`
+            flavour.textContent =  `You lose - the bird drinks the water.`
         };
     } else if (playerSelection === "scissors") {
         if (computerSelection === "paper") {
             playerWins++;
-            return `You win - ${playerSelection} beats ${computerSelection}!`
+            flavour.textContent =  `You win - the bird drinks the water.`
         } else {
             computerWins++;
-            return `You lose - ${computerSelection} beats ${playerSelection}!`
+            flavour.textContent =  `You lose - the stone injures the bird.`
         };
-    } else {
-        return "Please write 'Rock', 'Paper', or 'Scissors' only!";
     };
-
+    
 };
+
+
+choice.forEach((button) => {
+    button.addEventListener("click", () => {
+        let computerTurn = getComputerChoice();
+        let playerTurn = button.id;
+
+        playRound(playerTurn, computerTurn);
+        game();
+    })
+})
 
 
 const game = () => {
-    for (let i = 0; i < 5; i++) {
-        
-            console.log(playRound());
-        };
-
+    scores.textContent = `${playerWins} - ${computerWins}`;
     
-
-if (playerWins > computerWins) {
-        return "You win the game! Refresh the page to let the computer have its rematch!";
-    } else if (playerWins === computerWins) {
-        return "The game ended in a tie! Refresh the page to try again!";
-    } else {
-        return "You lose! Refresh the page to try again!"
-    }
+    if (playerWins === 5) {
+        header.textContent = "You won.";
+        footer.textContent = "Refresh the page to play again.";
+        container.style.display = "none";
+        flavour.style.display = "none";
+    } else if (computerWins === 5) {
+        header.textContent = "You lost.";
+        footer.textContent = "Refresh the page to play again."
+        container.style.display = "none";
+        flavour.style.display = "none";
+    };
 };
-
-console.log(game()); 
